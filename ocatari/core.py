@@ -256,8 +256,8 @@ class OCAtari:
                  - info: Additional information from the environment.
         :rtype: tuple
         """
-        # Reset the environment and detect objects from the initial state
         obs, info = self._env.reset(*args, **kwargs)
+        img = obs
         self.objects = init_objects(
             self.game_name, self.hud, vision=self.mode == "vision")
         self.detect_objects()
@@ -268,6 +268,11 @@ class OCAtari:
             obs = np.array(self._state_buffer_dqn)
         elif self.obs_mode == "obj":
             obs = np.array(self._state_buffer_ns)
+        
+        cv2.imshow("Game Image", img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        
         return obs, info
 
     def _fill_buffer(self):
