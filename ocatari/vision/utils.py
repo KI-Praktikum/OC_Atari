@@ -282,6 +282,24 @@ def find_objects(image, color, size=None, tol_s=10,
     return detected
 
 
+#TODO
+def find_objects(image, game, mode, hud):
+    """
+    Finds the single colored objects in the image.
+
+    :param image: The image to mark the point on
+    :type image: np.array
+    
+
+    :return: ad dictionary with objects types as key and lists of x,y,w,h tuples
+    :rtype: TODO
+    """
+    print("")
+    #detected.append((x, y, w, h))
+    #return detected
+
+
+
 def find_exact_bounding_boxes(image, color, minx, maxx, miny, maxy):
     # Create a mask for the specified color range
     # mask = cv2.inRange(image[miny:maxy, minx:maxx, :], np.array(color), np.array(color))

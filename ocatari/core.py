@@ -54,7 +54,7 @@ class OCAtari:
     """
     :param env_name: The name of the Atari gymnasium environment e.g. "Pong" or "PongNoFrameskip-v5"
     :type env_name: str
-    :param mode: The detection method type: one of `raw`, `ram`, `vision`, or `both` (i.e. `ram` + `vision`)
+    :param mode: The detection method type: one of `raw`, `ram`, `vision`, or `both` (i.e. `ram` + `vision`) TODO specify new mode: vision_SPOC, vision_SLOC and vision_INSIGHT (rename?)
     :type mode: str
     :param hud: Whether to include or not objects from the HUD (e.g. scores, lives)
     :type hud: bool
@@ -180,6 +180,12 @@ class OCAtari:
             # Set object detection to use both RAM and vision-based extraction
             self.detect_objects = self._detect_objects_both
             self.objects_v = init_objects(self.game_name, self.hud)
+        elif mode in ["vision_SPOC", "vision_SLOC" "vision_INSIGHT"]:
+            #TODO
+            self.detect_objects = self._detect_objects_vision
+            self.objects = init_objects(self.game_name, self.hud, vision=True)
+
+            
         else:
             raise ValueError("Undefined mode for information extraction")
 
@@ -234,14 +240,14 @@ class OCAtari:
         """
         # Detect objects using vision-based extraction
         detect_objects_vision(
-            self.objects, self._env.env.unwrapped.ale.getScreenRGB(), self.game_name, self.hud)  # type: ignore
+            self.objects, self._env.env.unwrapped.ale.getScreenRGB(), self.game_name, self.hud, self.mode)  # type: ignore
 
     def _detect_objects_both(self):
         # Use both RAM and vision-based extraction methods to detect objects
         detect_objects_ram(
             self.objects, self._env.env.unwrapped.ale.getRAM(), self.game_name, self.hud)  # type: ignore
         detect_objects_vision(
-            self.objects_v, self._env.env.unwrapped.ale.getScreenRGB(), self.game_name, self.hud)  # type: ignore
+            self.objects_v, self._env.env.unwrapped.ale.getScreenRGB(), self.game_name, self.hud, self.mode)  # type: ignore
 
     def _reset_buffer(self):
         # Reset the buffer by filling it with the initial states
