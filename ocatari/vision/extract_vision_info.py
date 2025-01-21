@@ -2,7 +2,7 @@ import sys
 from termcolor import colored
 
 
-def detect_objects_vision(objects, obs, game_name, hud, mode):
+def detect_objects_vision(objects, obs, game_name, hud, detector):
 
     p_module = __name__.split('.')[:-1] + [game_name.lower()]
     game_module = '.'.join(p_module)
@@ -18,4 +18,4 @@ def detect_objects_vision(objects, obs, game_name, hud, mode):
     except AttributeError:
         raise NotImplementedError(
             colored(f"_detect_objects not implemented for game: {game_name}", "red"))
-    return mod._detect_objects(objects, obs, hud, mode)
+    return mod._detect_objects(objects, obs, hud, detector)

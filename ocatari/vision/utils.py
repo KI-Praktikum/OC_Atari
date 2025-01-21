@@ -283,7 +283,7 @@ def find_objects(image, color, size=None, tol_s=10,
 
 
 #TODO
-def find_objects(image, game, mode, hud):
+def find_objects_external_detector(image, detector, hud):
     """
     Finds the single colored objects in the image.
 
@@ -295,8 +295,12 @@ def find_objects(image, game, mode, hud):
     :rtype: TODO
     """
     print("")
+
+    #detector.detect(image, hud) reduce tuples from 6 to 4
+
+    detected = {}
     #detected.append((x, y, w, h))
-    #return detected
+    return detected
 
 
 

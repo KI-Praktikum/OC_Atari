@@ -1,4 +1,4 @@
-from .utils import find_objects, match_objects
+from .utils import find_objects, match_objects, find_objects_external_detector
 from .game_objects import GameObject
 
 
@@ -55,11 +55,11 @@ class Score(GameObject):
 # MAX_NB_OBJECTS_HUD =  {'Player': 1, 'Tree': 4, 'Mogul': 3, 'Flag': 4, 'Score': 1, 'Clock': 1}
 
 
-def _detect_objects(objects, obs, hud=False, mode="vision"):
+def _detect_objects(objects, obs, hud=False, detector=None):
 
-    if mode != "vision":
+    if detector:
         print("")
-        detected_objects = find_objects(obs, "skiing", mode, hud)
+        detected_objects = find_objects_external_detector(obs, detector, hud)
         #TODO devide detected_objects into per object
         player = objects[0]
         player_bb = detected_objects["player"][0]

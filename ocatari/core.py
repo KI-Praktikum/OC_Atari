@@ -82,6 +82,7 @@ class OCAtari:
         self.game_name = game_name
         # Set the mode for object detection (RAM, vision, etc.)
         self.mode = mode
+        self.detector = None
         # Set the observation mode (dqn, obj, ori)
         self.obs_mode = obs_mode
         # Whether to include HUD elements in the object detection
@@ -181,9 +182,20 @@ class OCAtari:
             self.detect_objects = self._detect_objects_both
             self.objects_v = init_objects(self.game_name, self.hud)
         elif mode in ["vision_SPOC", "vision_SLOC" "vision_INSIGHT"]:
-            #TODO
+
+            
+            if mode == "vision_SPOC":
+                self.detector = None #load_space_detector(self.game_name)
+            elif mode == "vision_SLOC":
+                self.detector = None
+            elif mode == "vision_INSIGHT":
+                self.detector = None
+
+            #TODO create detector obj here and pass it down?
             self.detect_objects = self._detect_objects_vision
             self.objects = init_objects(self.game_name, self.hud, vision=True)
+
+
 
             
         else:
@@ -220,6 +232,7 @@ class OCAtari:
             obs = np.array(self._state_buffer_ns)
         
         cv2.imshow("Game Image", img)
+        
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
@@ -240,7 +253,7 @@ class OCAtari:
         """
         # Detect objects using vision-based extraction
         detect_objects_vision(
-            self.objects, self._env.env.unwrapped.ale.getScreenRGB(), self.game_name, self.hud, self.mode)  # type: ignore
+            self.objects, self._env.env.unwrapped.ale.getScreenRGB(), self.game_name, self.hud, self.detector)  # type: ignore
 
     def _detect_objects_both(self):
         # Use both RAM and vision-based extraction methods to detect objects
