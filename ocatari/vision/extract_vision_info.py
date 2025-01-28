@@ -18,4 +18,9 @@ def detect_objects_vision(objects, obs, game_name, hud, detector):
     except AttributeError:
         raise NotImplementedError(
             colored(f"_detect_objects not implemented for game: {game_name}", "red"))
-    return mod._detect_objects(objects, obs, hud, detector)
+    
+    if detector:
+        return mod._detect_objects(objects, obs, hud, detector)
+    else: 
+        return mod._detect_objects(objects, obs, hud)
+
