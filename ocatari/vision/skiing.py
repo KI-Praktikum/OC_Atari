@@ -62,20 +62,15 @@ def _detect_objects(objects, obs, hud=False, detector=None):
         detected_objects = find_objects_external_detector(obs, detector, hud)
         #TODO devide detected_objects into per object
         player = objects[0]
-        player_bb = detected_objects["player"][0]
+        player_bb = detected_objects["Player"][0]
         player.xywh = player_bb
-        trees_bb = []
-        for col in trees_c:
-            trees_bb.extend([list(bb) + [col] for bb in detected_objects["tree"]])
-        match_objects(objects, trees_bb, 1, 4, Tree)
-        moguls_bb = []
-        for col in moguls_c:
-            moguls_bb.extend([list(bb) + [col] for bb in detected_objects["mogul"]])
-        match_objects(objects, moguls_bb, 5, 3, Mogul)
-        flags_bb = []
-        for col in flag_c:
-            flags_bb.extend([list(bb) + [col] for bb in detected_objects["flag"]])
-        match_objects(objects, flags_bb, 8, 4, Flag)
+
+        match_objects(objects, detected_objects["Tree"], 1, 4, Tree)
+
+        match_objects(objects, detected_objects["Mogul"], 5, 3, Mogul)
+
+        match_objects(objects, detected_objects["Flag"], 8, 4, Flag)
+
         if hud:
             score, clock = objects[-2:]
             #TODO replace find objects

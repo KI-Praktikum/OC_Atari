@@ -12,6 +12,7 @@ from ocatari.vision.game_objects import GameObject as GameObjectVision
 from ocatari.utils import draw_label, draw_arrow
 from gymnasium.error import NameNotFound
 import warnings
+from ox4rl import SPACEDetector
 
 try:
     # ALE (Arcade Learning Environment) is required for running Atari environments.
@@ -185,7 +186,7 @@ class OCAtari:
 
             
             if mode == "vision_SPOC":
-                self.detector = None #load_space_detector(self.game_name)
+                self.detector = SPACEDetector((self.game_name).lower())
             elif mode == "vision_SLOC":
                 self.detector = None
             elif mode == "vision_INSIGHT":
@@ -231,10 +232,10 @@ class OCAtari:
         elif self.obs_mode == "obj":
             obs = np.array(self._state_buffer_ns)
         
-        cv2.imshow("Game Image", img)
+        #cv2.imshow("Game Image", img)
         
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        #cv2.waitKey(0)
+        #cv2.destroyAllWindows()
 
         return obs, reward, truncated, terminated, info
 

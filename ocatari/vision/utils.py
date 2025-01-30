@@ -298,9 +298,17 @@ def find_objects_external_detector(image, detector, hud):
 
     #detector.detect(image, hud) reduce tuples from 6 to 4
 
-    detected = {}
-    #detected.append((x, y, w, h))
-    return detected
+    detected = detector.detect(image)
+    #TODO: cut the last two array entries in each tuple
+    #detected.append((x, y, w, h)) and if there is a rgb value: detected.append((x, y, w, h, rgb))
+    #TODO: clarify format of rgb value
+    transformed_detection = {}
+    for key, values in detected.items():
+        transformed_detection[key] = [
+            tuple(v[:4]) if v[5] is None else tuple(v[:4] + (v[5],))
+            for v in values
+        ]
+    return transformed_detection
 
 
 
