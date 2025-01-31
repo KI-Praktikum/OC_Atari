@@ -305,7 +305,7 @@ def find_objects_external_detector(image, detector, hud):
     transformed_detection = {}
     for key, values in detected.items():
         transformed_detection[key] = [
-            tuple(v[:4]) if v[5] is None else tuple(v[:4] + (v[5],))
+            list(v[:4]) if v[5] is None else list(v[:4] + (v[5],))
             for v in values
         ]
     return transformed_detection
