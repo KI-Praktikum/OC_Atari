@@ -8,6 +8,7 @@ from collections import Counter
 from scipy.optimize import linear_sum_assignment
 from .game_objects import NoObject
 import warnings
+from collections import defaultdict
 
 
 def most_common_color(image, exclude_black=True):
@@ -302,10 +303,10 @@ def find_objects_external_detector(image, detector, hud):
     #TODO: cut the last two array entries in each tuple
     #detected.append((x, y, w, h)) and if there is a rgb value: detected.append((x, y, w, h, rgb))
     #TODO: clarify format of rgb value
-    transformed_detection = {}
+    transformed_detection = defaultdict(list)
     for key, values in detected.items():
         transformed_detection[key] = [
-            list(v[:4]) if v[5] is None else list(v[:4] + (v[5],))
+            list(v[:4] + ([255, 0, 127],)) if v[5] is None else list(v[:4] + (v[5],))
             for v in values
         ]
     return transformed_detection
