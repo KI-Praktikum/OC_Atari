@@ -5,14 +5,14 @@ from itertools import chain
 from termcolor import colored
 from ocatari.ram.extract_ram_info import (
     detect_objects_ram, init_objects, get_max_objects, get_object_state_size, get_class_dict)
-from ocatari.vision.extract_vision_info import detect_objects_vision
+from ocatari.vision.extract_vision_info import detect_objects_vision, detect_objects_vision_detector
 from ocatari.vision.utils import mark_bb, to_rgba
 from ocatari.ram.game_objects import GameObject, ValueObject
 from ocatari.vision.game_objects import GameObject as GameObjectVision
 from ocatari.utils import draw_label, draw_arrow
 from gymnasium.error import NameNotFound
 import warnings
-from ox4rl import SPACEDetector
+from ox4rl import SPACEDetector # bitte klappe @Paul TODO pls fix
 
 try:
     # ALE (Arcade Learning Environment) is required for running Atari environments.
@@ -193,7 +193,7 @@ class OCAtari:
                 self.detector = None
 
             #TODO create detector obj here and pass it down?
-            self.detect_objects = self._detect_objects_vision
+            self.detect_objects = self._detect_objects_vision_detector
             self.objects = init_objects(self.game_name, self.hud, vision=True)
 
 
@@ -254,7 +254,15 @@ class OCAtari:
         """
         # Detect objects using vision-based extraction
         detect_objects_vision(
-            self.objects, self._env.env.unwrapped.ale.getScreenRGB(), self.game_name, self.hud, self.detector)  # type: ignore
+            self.objects, self._env.env.unwrapped.ale.getScreenRGB(), self.game_name, self.hud)  # type: ignore
+
+    def _detect_objects_vision_detector(self):
+
+        # GameObjekte aus dem Spiel importieren
+
+        detect_objects_vision_detector(
+            self.objects, self._env.env.unwrapped.ale.getScreenRGB(), self.game_name, self.hud, self.detector, self.max_objects_per_cat)  # type: ignore
+
 
     def _detect_objects_both(self):
         # Use both RAM and vision-based extraction methods to detect objects
